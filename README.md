@@ -39,6 +39,5 @@ Enhancing response accuracy with fine-tuned models.
 This project is open-source under the MIT License.
 
 ## 🔗 Connect with Me
-# 🔗 Connect with Me  
 - [LinkedIn](https://www.linkedin.com/in/muddassir-shakhan-559740257)  
 - [GitHub](https://github.com/Muddassirshakhan)  
