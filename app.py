@@ -10,10 +10,22 @@ from langchain_community.vectorstores import Chroma
 from langchain_groq import ChatGroq
 from src.helper import download_huggingface_embedding, load_data, load_data_from_uploaded_pdf, load_data_from_url, text_split
 
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
+
 # Force Streamlit to use pysqlite3 instead of the outdated system sqlite3
 os.environ["PYTHON_SQLITE3_VERSION"] = "3.35.0"
 sys.modules["sqlite3"] = __import__("pysqlite3")
 sys.modules["sqlite3.dbapi2"] = sys.modules["sqlite3"]
+
+# Configure Streamlit page settings
+st.set_page_config(page_title="Medical AI Assistant",
+                   page_icon="💊",
+                   layout="centered")
+    
+st.title("Medical AI Assistant 💊")
+st.markdown("### Your AI-powered Assistant for medical queries and document analysis")
+st.markdown("#### 📂 Upload a PDF or URL or Use Default data to get Started")
 
 def extract_zip(zip_file, extract_to):
     """Extracts the zip file if the target directories do not exist."""
@@ -33,15 +45,6 @@ def main():
     PINECONE_INDEX_NAME = "medical"
     GROQ_API_KEY = os.getenv('GROQ_API_KEY')
     embeddings = download_huggingface_embedding()
-
-    # Configure Streamlit page settings
-    st.set_page_config(page_title="Medical AI Assistant",
-                       page_icon="💊",
-                       layout="centered")
-    
-    st.title("Medical AI Assistant 💊")
-    st.markdown("### Your AI-powered Assistant for medical queries and document analysis")
-    st.markdown("#### 📂 Upload a PDF or URL or Use Default data to get Started")
 
     # Upload file as input
     uploaded_file = st.sidebar.file_uploader("Upload a PDF File", type="pdf")
@@ -104,7 +107,7 @@ def main():
     # Initialize LLM
     llm = ChatGroq(
         api_key=GROQ_API_KEY,
-        model="mixtral-8x7b-32768", 
+        model="llama3-8b-8192", 
         temperature=0.5,
         max_tokens=1000,
         timeout=60
